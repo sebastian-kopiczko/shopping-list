@@ -15,7 +15,7 @@ function UserInterface(){
       <td>${product.name}</td>
       <td>${product.amount}</td>
       <td>${product.category}</td>
-      <td><a class="button is-danger is-outlined">Delete</a><td>
+      <td><a class="button is-danger is-outlined delete-product">Delete</a><td>
     `
     list.appendChild(tableRow);
   }
@@ -41,6 +41,13 @@ function UserInterface(){
       document.querySelector('.notification').remove();
     }, 2500)
   }
+  // delete product
+  UserInterface.prototype.deleteProduct = function(target){
+    if(target.classList.contains('delete-product')){
+      target.parentElement.parentElement.remove();
+    }
+  }
+
   // clearing inputs
   UserInterface.prototype.clearFields = function(){
     document.getElementById('product-name').value = '';
@@ -49,7 +56,7 @@ function UserInterface(){
   }
 }
 
-// event listeners
+// event listeners for subbmiting a product
 document.getElementById('shopping-form').addEventListener('submit', function(e){
   // getting form values
   const productName = document.getElementById('product-name').value,
@@ -74,3 +81,10 @@ document.getElementById('shopping-form').addEventListener('submit', function(e){
   }
   e.preventDefault();
 })
+
+// event listener for deleting a product from list
+document.getElementById('product-list').addEventListener('click', function(e){
+  const ui = new UserInterface;
+  ui.deleteProduct(e.target);
+  ui.showAlert(`deleted`, 'is-primary')
+});
