@@ -16,8 +16,8 @@ class UserInterface{
       <td>${product.name}</td>
       <td>${product.amount}</td>
       <td>${product.category}</td>
-      <td><a class="button is-danger is-outlined delete-product">Delete</a><td>
-    `
+      <td><a class="button is-danger is-outlined delete-product">Delete</a></td>
+    `;
     list.appendChild(tableRow);
   }
 
@@ -44,9 +44,7 @@ class UserInterface{
   }
 
   deleteProduct(target){
-    if(target.classList.contains('delete-product')){
-      target.parentElement.parentElement.remove();
-    }
+    target.parentElement.parentElement.remove();
   }
 
   clearFields(){
@@ -55,6 +53,46 @@ class UserInterface{
     document.getElementById('product-category').value = '';
   }
 }
+
+// local storage class
+class Store {
+  static getProducts(){
+    let products;
+    if(localStorage.getItem('products') === null){
+      products = [];
+    } else {
+      products = JSON.parse(localStorage.getItem('products'));
+    }
+    return products;
+  }
+
+  static displayProducts(){
+    const products = Store.getProducts();
+    products.forEach(function(product){
+      const ui = new UserInterface;
+      ui.addProductToList(product);
+    })
+  }
+
+  static addProduct(product){
+    const products = Store.getProducts();
+    products.push(product);
+    localStorage.setItem('products', JSON.stringify(products));
+  }
+
+  static removeProduct(name, index){
+    const products = Store.getProducts();
+    products.forEach(function(product, index){
+      if(product.name === name) {
+        products.splice(index, 1);
+      }
+    });
+    localStorage.setItem('products', JSON.stringify(products));
+  }
+}
+
+// DOM load event
+document.addEventListener('DOMContentLoaded', Store.displayProducts);
 
 // event listener for subbmiting a product
 document.getElementById('shopping-form').addEventListener('submit', function(e){
@@ -65,7 +103,7 @@ document.getElementById('shopping-form').addEventListener('submit', function(e){
   const product = new Product(productName, productAmount, productCategory);
   // instance ui
   const ui = new UserInterface();
-  console.log(ui);
+  // console.log(ui);
   // validation
   if(productName === '' || productAmount === '' || productCategory === ''){
     // show error
@@ -73,6 +111,9 @@ document.getElementById('shopping-form').addEventListener('submit', function(e){
   } else {
     // add product to shopping list
     ui.addProductToList(product);
+
+    // add product to localStorage
+    Store.addProduct(product);
 
     // inform about success
     ui.showAlert('product added successfully', 'is-success');
@@ -85,7 +126,17 @@ document.getElementById('shopping-form').addEventListener('submit', function(e){
 
 // event listener for deleting a product from list
 document.getElementById('product-list').addEventListener('click', function(e){
-  const ui = new UserInterface;
-  ui.deleteProduct(e.target);
-  ui.showAlert(`deleted`, 'is-primary')
+  if(e.target.classList.contains('delete-product')){
+    const ui = new UserInterface;
+
+    // remove from the ui
+    ui.deleteProduct(e.target);
+
+    // remove from local storage
+    Store.removeProduct(e.target.parentElement.parentElement.firstElementChild.textContent);
+
+    ui.showAlert('deleted', 'is-primary');
+    }
+
+  e.preventDefault();
 });
