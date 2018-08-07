@@ -1,14 +1,15 @@
-// product constructor
-function Product(name, amount, category){
-  this.name = name;
-  this.amount = amount;
-  this.category = category;
+class Product {
+  constructor(name, amount, category){
+    this.name = name;
+    this.amount = amount;
+    this.category = category;
+  }
 }
 
-// ui constructor
-function UserInterface(){
-  UserInterface.prototype.addProductToList = function(product){
+class UserInterface{
+  addProductToList(product) {
     const list = document.getElementById('product-list');
+
     // create table row element
     const tableRow = document.createElement('tr');
     tableRow.innerHTML = `
@@ -19,8 +20,8 @@ function UserInterface(){
     `
     list.appendChild(tableRow);
   }
-  // showing alerts
-  UserInterface.prototype.showAlert = function(message, className){
+
+  showAlert(message, className){
     // create div for alert message (bulma notifications)
     const notificationDiv = document.createElement('div');
 
@@ -41,15 +42,14 @@ function UserInterface(){
       document.querySelector('.notification').remove();
     }, 2500)
   }
-  // delete product
-  UserInterface.prototype.deleteProduct = function(target){
+
+  deleteProduct(target){
     if(target.classList.contains('delete-product')){
       target.parentElement.parentElement.remove();
     }
   }
 
-  // clearing inputs
-  UserInterface.prototype.clearFields = function(){
+  clearFields(){
     document.getElementById('product-name').value = '';
     document.getElementById('product-amount').value = '';
     document.getElementById('product-category').value = '';
@@ -65,6 +65,7 @@ document.getElementById('shopping-form').addEventListener('submit', function(e){
   const product = new Product(productName, productAmount, productCategory);
   // instance ui
   const ui = new UserInterface();
+  console.log(ui);
   // validation
   if(productName === '' || productAmount === '' || productCategory === ''){
     // show error
