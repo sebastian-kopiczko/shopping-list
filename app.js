@@ -19,7 +19,29 @@ function UserInterface(){
     `
     list.appendChild(tableRow);
   }
+  // showing alerts
+  UserInterface.prototype.showAlert = function(message, className){
+    // create div for alert message (bulma notifications)
+    const notificationDiv = document.createElement('div');
 
+    // add classname
+    notificationDiv.className = `notification ${className}`;
+
+    // apend alert message to notifiaction div
+    notificationDiv.appendChild(document.createTextNode(message));
+
+    // get container and form
+    const container = document.querySelector('.container'),
+          form = document.querySelector('.shopping__form');
+
+    // insert alert before form within container
+    container.insertBefore(notificationDiv, form);
+
+    setTimeout(function(){
+      document.querySelector('.notification').remove();
+    }, 2500)
+  }
+  // clearing inputs
   UserInterface.prototype.clearFields = function(){
     document.getElementById('product-name').value = '';
     document.getElementById('product-amount').value = '';
@@ -36,9 +58,19 @@ document.getElementById('shopping-form').addEventListener('submit', function(e){
   const product = new Product(productName, productAmount, productCategory);
   // instance ui
   const ui = new UserInterface();
-  // add product to shopping list
-  ui.addProductToList(product);
-  // clear inputs after submitting
-  ui.clearFields();
+  // validation
+  if(productName === '' || productAmount === '' || productCategory === ''){
+    // show error
+    ui.showAlert('Fill all the fields', 'is-danger');
+  } else {
+    // add product to shopping list
+    ui.addProductToList(product);
+
+    // inform about success
+    ui.showAlert('product added successfully', 'is-success');
+
+    // clear inputs after submitting
+    ui.clearFields();
+  }
   e.preventDefault();
 })
