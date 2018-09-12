@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,44 +9,60 @@
   <link rel="stylesheet" href="style.css">
   <title>Shopping list</title>
 </head>
+
 <body>
   <div class="container">
-    <h1 class="title">Add product to the list</h1>
-    <form id="shopping-form" class="shopping__form">
-      <div class="field">
-        <label class="label">Product name</label>
-        <div class="control">
-          <input id="product-name" class="input" type="text" placeholder="Name">
+    <div class="column is-half is-offset-one-quarter">
+      <div class="app">
+        <h1 class="title">Add product to the list</h1>
+        <form id="shopping-form" class="shopping__form">
+          <div class="field">
+            <label class="label">Product name</label>
+            <div class="control">
+              <input id="product-name" class="input" type="text" placeholder="Name">
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Amount</label>
+            <div class="control">
+              <input id="product-amount" class="input" type="text" placeholder="Amount">
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Product category</label>
+            <div class="control">
+              <div class="select is-primary">
+                <select id="product-category">
+                  <option value="" selected disabled hidden>Choose category</option>
+                  <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                  <option value="Dairy">Dairy</option>
+                  <option value="Bakery">Bakery</option>
+                  <option value="Meat, fish">Meat, fish</option>
+                  <option value="Frozen">Frozen</option>
+                  <option value="Drinks">Drinks</option>
+                  <option value="Household">Household</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <input class="button is-fullwidth" type="submit" value="Submit input">
+        </form>
+        <div class="shopping-list__table">
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody id="product-list"></tbody>
+          </table>
         </div>
       </div>
-      <div class="field">
-        <label class="label">Amount</label>
-        <div class="control">
-          <input id="product-amount" class="input" type="text" placeholder="Amount">
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Product category</label>
-        <div class="control">
-          <input id="product-category" class="input" type="text" placeholder="Category">
-        </div>
-      </div>
-      <input class="button is-fullwidth" type="submit" value="Submit input">
-    </form>
-    <div class="shopping-list__table">
-      <table class="table is-fullwidth">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>delete</th>
-          </tr>
-        </thead>
-        <tbody id="product-list"></tbody>
-      </table>
     </div>
   </div>
   <script src="es6_app.js"></script>
 </body>
+
 </html>
