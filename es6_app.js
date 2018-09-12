@@ -13,10 +13,9 @@ class UserInterface{
     // create table row element
     const tableRow = document.createElement('tr');
     tableRow.innerHTML = `
-      <td>${product.name}</td>
-      <td>${product.amount}</td>
-      <td>${product.category}</td>
-      <td><a class="button is-danger is-outlined delete-product">Delete</a></td>
+      <td>${product.name}, ${product.amount}</td>
+      <td class="has-text-centered">${product.category}</td>
+      <td class="has-text-right"><a class="button is-danger is-outlined delete-product">&times;</a></td>
     `;
     list.appendChild(tableRow);
   }
@@ -97,9 +96,10 @@ document.addEventListener('DOMContentLoaded', Store.displayProducts);
 // event listener for subbmiting a product
 document.getElementById('shopping-form').addEventListener('submit', function(e){
   // getting form values
+  const selectField = document.getElementById('product-category');
   const productName = document.getElementById('product-name').value,
         productAmount = document.getElementById('product-amount').value,
-        productCategory = document.getElementById('product-category').value;
+        productCategory = selectField.options[selectField.selectedIndex].value;
   const product = new Product(productName, productAmount, productCategory);
   // instance ui
   const ui = new UserInterface();
@@ -133,10 +133,10 @@ document.getElementById('product-list').addEventListener('click', function(e){
     ui.deleteProduct(e.target);
 
     // remove from local storage
-    Store.removeProduct(e.target.parentElement.parentElement.firstElementChild.textContent);
+    const itemToRemove = e.target.parentElement.parentElement.firstElementChild.textContent;
+    Store.removeProduct(itemToRemove.substr(0, itemToRemove.indexOf(',')));
 
     ui.showAlert('deleted', 'is-primary');
-    }
-
+  }
   e.preventDefault();
 });
